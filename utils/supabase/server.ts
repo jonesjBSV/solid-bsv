@@ -1,7 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { Database } from '@/types/database.types'
+
 const getSupabaseClient = async () => {
 	const session = await auth()
 
@@ -9,7 +10,7 @@ const getSupabaseClient = async () => {
 		redirect('/')
 	}
 	// 如何 使用 session.supabaseAccessToken 来创建 supabase client
-	return createClient<Database>(
+	return createSupabaseClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 		{
@@ -24,10 +25,18 @@ const getSupabaseClient = async () => {
 
 function createSupabaseAdminClient() {
 	// server  api
-	return createClient<Database>(
+	return createSupabaseClient<Database>(
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.SUPABASE_SECRET_KEY!,
-
 	)
 }
+
+// Export createClient for compatibility
+export function createClient() {
+	return createSupabaseClient<Database>(
+		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+	)
+}
+
 export { getSupabaseClient, createSupabaseAdminClient }

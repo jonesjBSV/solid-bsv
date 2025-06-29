@@ -5,9 +5,12 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import { OpenPanelComponent } from '@openpanel/nextjs';
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from 'react-hot-toast';
+import { EnhancedToaster } from "@/components/ui/enhanced-toaster";
+import { OfflineBanner } from "@/components/ui/OfflineBanner";
 import FooterWrapper from "@/components/ui/FooterWrapper";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AppProvider } from "@/context/AppContext";
+import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 
 export const metadata: Metadata = config.metadata;
 
@@ -21,15 +24,19 @@ export default function RootLayout({
       <SessionProvider>
         <ThemeProvider defaultTheme="system" storageKey="solid-bsv-theme">
           <AppProvider>
-            <body
-              className="antialiased min-h-screen flex flex-col"
-            >
-              <Toaster position="top-center" />
-              <main className="flex-grow">
-                {children}
-              </main>
-              <FooterWrapper />
-            </body>
+            <ErrorBoundary>
+              <body
+                className="antialiased min-h-screen flex flex-col"
+              >
+                <OfflineBanner />
+                <Toaster position="top-center" />
+                <EnhancedToaster />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <FooterWrapper />
+              </body>
+            </ErrorBoundary>
           </AppProvider>
         </ThemeProvider>
       </SessionProvider>

@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { FormErrorAlert, FormSuccessMessage, useFormFeedback } from '@/components/forms/FormError'
-import { useAppContext } from '@/context/AppContext'
+// import { useAppContext } from '@/context/AppContext'
 import { 
   User, 
   Palette, 
@@ -57,7 +57,7 @@ interface IntegrationSettings {
 
 export function UserSettingsContent() {
   const { data: session } = useSession()
-  const { user } = useAppContext()
+  // const { user } = useAppContext()
   const feedback = useFormFeedback()
   
   const [preferences, setPreferences] = React.useState<UserPreferences>({
