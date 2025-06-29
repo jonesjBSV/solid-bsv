@@ -6,6 +6,8 @@ import { OpenPanelComponent } from '@openpanel/nextjs';
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from 'react-hot-toast';
 import FooterWrapper from "@/components/ui/FooterWrapper";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { AppProvider } from "@/context/AppContext";
 
 export const metadata: Metadata = config.metadata;
 
@@ -17,15 +19,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionProvider>
-        <body
-          className="antialiased min-h-screen flex flex-col"
-        >
-          <Toaster position="top-center" />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <FooterWrapper />
-        </body>
+        <ThemeProvider defaultTheme="system" storageKey="solid-bsv-theme">
+          <AppProvider>
+            <body
+              className="antialiased min-h-screen flex flex-col"
+            >
+              <Toaster position="top-center" />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <FooterWrapper />
+            </body>
+          </AppProvider>
+        </ThemeProvider>
       </SessionProvider>
       {/* Google Tag Manager */}
       {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (

@@ -126,7 +126,7 @@ const initialState: AppState = {
 
 // Reducer
 function appReducer(state: AppState, action: AppAction): AppState {
-  console.log('AppContext reducer:', action.type, action.payload)
+  console.log('AppContext reducer:', action.type, 'payload' in action ? action.payload : '(no payload)')
   
   switch (action.type) {
     case 'SET_USER':

@@ -21,9 +21,11 @@ import {
   Settings, 
   User,
   Globe,
-  Shield
+  Shield,
+  Search
 } from "lucide-react"
 import Link from "next/link"
+import { ThemeToggle } from "@/providers/ThemeProvider"
 
 // Main navigation items
 const navigationItems = [
@@ -33,13 +35,18 @@ const navigationItems = [
     icon: Home,
   },
   {
+    title: "Search",
+    url: "/search",
+    icon: Search,
+  },
+  {
     title: "Profile",
     url: "/app/profile", 
     icon: User,
   },
   {
     title: "Settings",
-    url: "/app/settings",
+    url: "/settings",
     icon: Settings,
   }
 ]
@@ -128,7 +135,13 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className="p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">
+            Theme
+          </span>
+          <ThemeToggle variant="button" size="sm" />
+        </div>
         <div className="text-xs text-muted-foreground">
           Second Brain App v1.0
         </div>
