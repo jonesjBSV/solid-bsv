@@ -226,7 +226,7 @@ describe('validateContextEntryForm', () => {
     const invalidData = {
       title: 'Test',
       content: 'Content',
-      content_type: 'invalid-type' // Not in allowed enum
+      content_type: 'invalid-type' as any // Not in allowed enum
     }
 
     expect(validateContextEntryForm(invalidData)).toBe(false)
