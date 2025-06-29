@@ -282,10 +282,6 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       createdAt: Date.now(),
-      open: true,
-      onOpenChange: (open) => {
-        if (!open) dismiss()
-      },
     },
   })
 

@@ -253,7 +253,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'SET_MICROPAYMENTS':
       const totalEarnings = action.payload
         .filter(payment => payment.payment_status === 'confirmed')
-        .reduce((sum, payment) => sum + payment.price_satoshis, 0)
+        .reduce((sum, payment) => sum + payment.amount_satoshis, 0)
       
       return {
         ...state,
@@ -269,7 +269,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       const updatedMicropayments = [...state.micropayments, action.payload]
       const newTotalEarnings = updatedMicropayments
         .filter(payment => payment.payment_status === 'confirmed')
-        .reduce((sum, payment) => sum + payment.price_satoshis, 0)
+        .reduce((sum, payment) => sum + payment.amount_satoshis, 0)
       
       return {
         ...state,

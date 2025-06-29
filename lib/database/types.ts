@@ -3,6 +3,8 @@
  * Generated from Supabase schema definitions
  */
 
+import { Json } from '@/types/database.types'
+
 // NextAuth User Types
 export interface User {
   id: string
@@ -44,13 +46,15 @@ export interface Session {
 export interface PodResource {
   id: number
   resource_path: string
-  resource_type: 'note' | 'document' | 'context' | 'file' | string
-  status: 'private' | 'shared' | 'notarized' | 'public'
+  resource_type: string
+  status: string
   bsv_tx_hash?: string | null
+  overlay_topic?: string | null
+  pod_url: string
   content_hash?: string | null
-  resource_size?: number | null
-  mime_type?: string | null
   description?: string | null
+  mime_type?: string | null
+  resource_size?: number | null
   user_id: string
   created_at: string
   updated_at: string
@@ -60,30 +64,33 @@ export interface PodResource {
 export interface Identity {
   id: number
   solid_pod_url: string
-  connection_status: 'connected' | 'disconnected' | 'error'
-  did?: string | null
-  did_document?: Record<string, any> | null
-  verifiable_credential?: Record<string, any> | null
-  did_bsv_tx_hash?: string | null
-  vc_bsv_tx_hash?: string | null
-  last_sync: string
-  access_token_encrypted?: string | null
-  user_id: string
+  did: string
+  did_document?: Json | null
+  did_bsv_hash?: string | null
+  did_overlay_topic?: string | null
+  vc?: Json | null
+  vc_bsv_hash?: string | null
+  vc_overlay_topic?: string | null
+  connection_status?: string | null
+  access_token?: string | null
   created_at: string
   updated_at: string
+  user_id: string
 }
 
 // BSV Attestation Types
 export interface BSVAttestation {
   id: number
-  attestation_type: 'did' | 'vc' | 'resource'
-  bsv_tx_hash: string
-  content_hash: string
-  timestamp_proof: Record<string, any>
   resource_id?: number | null
   identity_id?: number | null
-  user_id: string
+  attestation_type: string
+  tx_hash: string
+  overlay_topic?: string | null
+  content_hash: string
+  timestamp_proof?: Json | null
+  wallet_address?: string | null
   created_at: string
+  user_id: string
 }
 
 // Context Entry Types (Second Brain)
@@ -91,30 +98,47 @@ export interface ContextEntry {
   id: number
   title: string
   content: string
-  content_type: 'text' | 'markdown' | 'link' | 'snippet'
-  metadata?: Record<string, any> | null
+  content_type: string
   tags?: string[] | null
+  metadata?: Json | null
   pod_resource_id?: number | null
   bsv_tx_hash?: string | null
-  user_id: string
+  overlay_topic?: string | null
   created_at: string
   updated_at: string
+  user_id: string
 }
 
 // Sharing & Monetization Types
 export interface SharedResource {
   id: number
-  resource_type: 'pod_resource' | 'context_entry'
+  resource_type: string
   resource_id: number
-  price_satoshis: number
+  
+  // General sharing fields
+  shared_with_user_id?: string | null
+  shared_with_public?: boolean | null
+  requires_payment?: boolean | null
+  description?: string | null
+  access_limit?: number | null
+  expiry_date?: string | null
+  
+  // Payment fields
+  price_per_access?: number | null
+  price_currency?: string | null
+  price_satoshis?: number | null
+  
+  // BSV/Overlay specific fields
   overlay_topic?: string | null
-  access_policy: Record<string, any>
-  total_earnings: number
-  total_accesses: number
-  is_active: boolean
-  user_id: string
+  access_policy?: Json | null
+  payment_address?: string | null
+  
+  // Stats
+  total_access_count?: number | null
+  total_earnings_satoshis?: number | null
+  is_active?: boolean | null
   created_at: string
-  updated_at: string
+  user_id: string
 }
 
 export interface Micropayment {
@@ -122,27 +146,28 @@ export interface Micropayment {
   shared_resource_id: number
   buyer_user_id: string
   seller_user_id: string
-  price_satoshis: number
-  bsv_tx_hash: string
-  payment_status: 'pending' | 'confirmed' | 'failed'
-  access_granted: boolean
+  amount_satoshis: number
+  tx_hash: string
+  payment_status: string
+  access_granted?: boolean | null
+  access_expires_at?: string | null
   created_at: string
-  updated_at: string
+  confirmed_at?: string | null
 }
 
 // Overlay Network Sync Types
 export interface OverlaySync {
   id: number
-  sync_type: 'did' | 'vc' | 'resource' | 'payment'
+  sync_type: string
   reference_id: number
   overlay_topic: string
-  sync_status: 'pending' | 'synced' | 'failed'
-  last_attempt: string
-  retry_count: number
-  error_message?: string | null
-  user_id: string
+  tx_hash?: string | null
+  sync_status: string
+  sync_data?: Json | null
+  last_sync_at?: string | null
+  retry_count?: number | null
   created_at: string
-  updated_at: string
+  user_id: string
 }
 
 // Database Insert Types (without auto-generated fields)
@@ -150,8 +175,8 @@ export type InsertPodResource = Omit<PodResource, 'id' | 'created_at' | 'updated
 export type InsertIdentity = Omit<Identity, 'id' | 'created_at' | 'updated_at'>
 export type InsertBSVAttestation = Omit<BSVAttestation, 'id' | 'created_at'>
 export type InsertContextEntry = Omit<ContextEntry, 'id' | 'created_at' | 'updated_at'>
-export type InsertSharedResource = Omit<SharedResource, 'id' | 'created_at' | 'updated_at'>
-export type InsertMicropayment = Omit<Micropayment, 'id' | 'created_at' | 'updated_at'>
+export type InsertSharedResource = Omit<SharedResource, 'id' | 'created_at'>
+export type InsertMicropayment = Omit<Micropayment, 'id' | 'created_at' | 'confirmed_at'> & { amount_satoshis: number; tx_hash: string }
 export type InsertOverlaySync = Omit<OverlaySync, 'id' | 'created_at' | 'updated_at'>
 
 // Database Update Types (partial with required ID)
@@ -171,10 +196,7 @@ export interface ContextEntryWithResource extends ContextEntry {
   pod_resource?: PodResource | null
 }
 
-export interface SharedResourceWithDetails extends SharedResource {
-  pod_resource?: PodResource | null
-  context_entry?: ContextEntry | null
-}
+export type SharedResourceWithDetails = SharedResource
 
 // Database Error Types
 export interface DatabaseError {

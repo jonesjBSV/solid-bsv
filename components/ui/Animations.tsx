@@ -275,18 +275,27 @@ export function HoverFloat({
 export function AnimatedButton({ 
   children, 
   className = '',
-  ...props 
+  onClick,
+  disabled,
+  type,
+  ...restProps 
 }: {
   children: React.ReactNode
   className?: string
-} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'disabled' | 'type' | 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd' | 'onAnimationIteration'>) {
   return (
     <motion.button
       className={className}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      {...props}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      {...restProps}
     >
       {children}
     </motion.button>

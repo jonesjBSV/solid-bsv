@@ -215,7 +215,7 @@ export function PerformanceMonitor({ children }: { children: React.ReactNode }) 
       // First Input Delay
       new PerformanceObserver((list) => {
         const entries = list.getEntries()
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           console.log('FID:', entry.processingStart - entry.startTime)
         })
       }).observe({ entryTypes: ['first-input'] })
@@ -224,7 +224,7 @@ export function PerformanceMonitor({ children }: { children: React.ReactNode }) 
       new PerformanceObserver((list) => {
         let cls = 0
         const entries = list.getEntries()
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           if (!entry.hadRecentInput) {
             cls += entry.value
           }

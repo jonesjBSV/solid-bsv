@@ -387,13 +387,13 @@ export function FileField<T extends FieldValues>({
             )}
             <FormControl>
               <Input
+                {...field}
                 type="file"
                 accept={accept}
                 multiple={multiple}
                 disabled={disabled}
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                {...field}
               />
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}

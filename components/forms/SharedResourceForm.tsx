@@ -28,8 +28,7 @@ const sharedResourceSchema = z.object({
     .optional()
     .or(z.literal('')),
     
-  shared_with_public: z.boolean()
-    .default(false),
+  shared_with_public: z.boolean(),
     
   price_per_access: z.number()
     .nonnegative('Price cannot be negative')
@@ -57,7 +56,6 @@ const sharedResourceSchema = z.object({
     .or(z.literal('')),
     
   requires_payment: z.boolean()
-    .default(false)
 })
 
 export type SharedResourceFormData = z.infer<typeof sharedResourceSchema>
@@ -103,16 +101,17 @@ export function SharedResourceForm({
     console.log('Shared resource form submitted:', data)
     
     try {
-      // Convert empty strings to undefined for optional fields
-      const submitData = {
-        ...data,
-        resource_id: data.resource_id === '' ? undefined : data.resource_id,
+      // Ensure proper types for submission  
+      const submitData: SharedResourceFormData = {
+        resource_id: data.resource_id === '' ? '' : (typeof data.resource_id === 'string' ? parseInt(data.resource_id, 10) : data.resource_id) as number | '',
         shared_with_user_id: data.shared_with_user_id === '' ? undefined : data.shared_with_user_id,
+        shared_with_public: data.shared_with_public,
+        requires_payment: data.requires_payment,
         price_per_access: data.price_per_access === '' ? undefined : data.price_per_access,
+        price_currency: watchRequiresPayment ? data.price_currency : undefined,
         access_limit: data.access_limit === '' ? undefined : data.access_limit,
         expiry_date: data.expiry_date === '' ? undefined : data.expiry_date,
-        description: data.description === '' ? undefined : data.description,
-        price_currency: watchRequiresPayment ? data.price_currency : undefined
+        description: data.description === '' ? undefined : data.description
       }
       
       await onSubmit(submitData)
@@ -200,7 +199,6 @@ export function SharedResourceForm({
                   name="price_per_access"
                   label="Price per Access"
                   type="number"
-                  step="0.01"
                   placeholder="0.00"
                   description="Cost to access this resource"
                   required={watchRequiresPayment}
@@ -232,8 +230,9 @@ export function SharedResourceForm({
                 form={form}
                 name="expiry_date"
                 label="Expiry Date"
-                type="date"
-                description="When this sharing arrangement expires"
+                type="text"
+                placeholder="YYYY-MM-DD"
+                description="When this sharing arrangement expires (format: YYYY-MM-DD)"
               />
             </div>
 

@@ -145,14 +145,14 @@ export function useComponentPerformance(componentName: string) {
 
   // Track mount time
   useEffect(() => {
-    mountTimeRef.current = performance.now()
+    mountTimeRef.current = typeof window !== 'undefined' ? window.performance.now() : 0
     setPerformance(prev => ({
       ...prev,
       mountTime: mountTimeRef.current
     }))
 
     return () => {
-      const unmountTime = performance.now()
+      const unmountTime = window.performance.now()
       console.log(`${componentName} lifecycle:`, {
         mountTime: mountTimeRef.current,
         totalLifetime: unmountTime - mountTimeRef.current
@@ -162,7 +162,7 @@ export function useComponentPerformance(componentName: string) {
 
   // Track renders
   useEffect(() => {
-    const renderTime = performance.now()
+    const renderTime = window.performance.now()
     const renderDuration = renderStartRef.current ? renderTime - renderStartRef.current : 0
     
     if (renderDuration > 0) {
@@ -186,7 +186,7 @@ export function useComponentPerformance(componentName: string) {
       }
     }
 
-    renderStartRef.current = performance.now()
+    renderStartRef.current = window.performance.now()
   })
 
   return performance

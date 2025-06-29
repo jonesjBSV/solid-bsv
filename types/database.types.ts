@@ -9,6 +9,124 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      accounts: {
+        Row: {
+          id: string
+          type: string
+          provider: string
+          providerAccountId: string
+          refresh_token: string | null
+          access_token: string | null
+          expires_at: number | null
+          token_type: string | null
+          scope: string | null
+          id_token: string | null
+          session_state: string | null
+          userId: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          type: string
+          provider: string
+          providerAccountId: string
+          refresh_token?: string | null
+          access_token?: string | null
+          expires_at?: number | null
+          token_type?: string | null
+          scope?: string | null
+          id_token?: string | null
+          session_state?: string | null
+          userId: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          type?: string
+          provider?: string
+          providerAccountId?: string
+          refresh_token?: string | null
+          access_token?: string | null
+          expires_at?: number | null
+          token_type?: string | null
+          scope?: string | null
+          id_token?: string | null
+          session_state?: string | null
+          userId?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accounts_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      sessions: {
+        Row: {
+          id: string
+          expires: string
+          sessionToken: string
+          userId: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          expires: string
+          sessionToken: string
+          userId: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          expires?: string
+          sessionToken?: string
+          userId?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      verification_tokens: {
+        Row: {
+          identifier: string
+          token: string
+          expires: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          identifier: string
+          token: string
+          expires: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          identifier?: string
+          token?: string
+          expires?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blogs: {
         Row: {
           content: string
@@ -135,21 +253,30 @@ export type Database = {
       users: {
         Row: {
           email: string | null
+          emailVerified: string | null
           id: string
           image: string | null
           name: string | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
           email?: string | null
-          id: string
-          image?: string | null
-          name?: string | null
-        }
-        Update: {
-          email?: string | null
+          emailVerified?: string | null
           id?: string
           image?: string | null
           name?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          email?: string | null
+          emailVerified?: string | null
+          id?: string
+          image?: string | null
+          name?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -183,6 +310,403 @@ export type Database = {
           metadata?: Json | null
           updated_at?: string | null
           user_name?: string | null
+        }
+        Relationships: []
+      }
+      pod_resource: {
+        Row: {
+          id: number
+          resource_path: string
+          resource_type: string
+          status: string
+          bsv_tx_hash: string | null
+          overlay_topic: string | null
+          pod_url: string
+          content_hash: string | null
+          description: string | null
+          mime_type: string | null
+          resource_size: number | null
+          created_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          resource_path: string
+          resource_type: string
+          status: string
+          bsv_tx_hash?: string | null
+          overlay_topic?: string | null
+          pod_url: string
+          content_hash?: string | null
+          description?: string | null
+          mime_type?: string | null
+          resource_size?: number | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          resource_path?: string
+          resource_type?: string
+          status?: string
+          bsv_tx_hash?: string | null
+          overlay_topic?: string | null
+          pod_url?: string
+          content_hash?: string | null
+          description?: string | null
+          mime_type?: string | null
+          resource_size?: number | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      identity: {
+        Row: {
+          id: number
+          solid_pod_url: string
+          did: string
+          did_document: Json | null
+          did_bsv_hash: string | null
+          did_overlay_topic: string | null
+          vc: Json | null
+          vc_bsv_hash: string | null
+          vc_overlay_topic: string | null
+          connection_status: string | null
+          access_token: string | null
+          created_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          solid_pod_url: string
+          did: string
+          did_document?: Json | null
+          did_bsv_hash?: string | null
+          did_overlay_topic?: string | null
+          vc?: Json | null
+          vc_bsv_hash?: string | null
+          vc_overlay_topic?: string | null
+          connection_status?: string | null
+          access_token?: string | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          solid_pod_url?: string
+          did?: string
+          did_document?: Json | null
+          did_bsv_hash?: string | null
+          did_overlay_topic?: string | null
+          vc?: Json | null
+          vc_bsv_hash?: string | null
+          vc_overlay_topic?: string | null
+          connection_status?: string | null
+          access_token?: string | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bsv_attestation: {
+        Row: {
+          id: number
+          resource_id: number | null
+          identity_id: number | null
+          attestation_type: string
+          tx_hash: string
+          overlay_topic: string | null
+          content_hash: string
+          timestamp_proof: Json | null
+          wallet_address: string | null
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          resource_id?: number | null
+          identity_id?: number | null
+          attestation_type: string
+          tx_hash: string
+          overlay_topic?: string | null
+          content_hash: string
+          timestamp_proof?: Json | null
+          wallet_address?: string | null
+          created_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          resource_id?: number | null
+          identity_id?: number | null
+          attestation_type?: string
+          tx_hash?: string
+          overlay_topic?: string | null
+          content_hash?: string
+          timestamp_proof?: Json | null
+          wallet_address?: string | null
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bsv_attestation_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "pod_resource"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bsv_attestation_identity_id_fkey"
+            columns: ["identity_id"]
+            isOneToOne: false
+            referencedRelation: "identity"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      context_entry: {
+        Row: {
+          id: number
+          title: string
+          content: string
+          content_type: string
+          tags: string[] | null
+          metadata: Json | null
+          pod_resource_id: number | null
+          bsv_tx_hash: string | null
+          overlay_topic: string | null
+          created_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          title: string
+          content: string
+          content_type?: string
+          tags?: string[] | null
+          metadata?: Json | null
+          pod_resource_id?: number | null
+          bsv_tx_hash?: string | null
+          overlay_topic?: string | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          title?: string
+          content?: string
+          content_type?: string
+          tags?: string[] | null
+          metadata?: Json | null
+          pod_resource_id?: number | null
+          bsv_tx_hash?: string | null
+          overlay_topic?: string | null
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "context_entry_pod_resource_id_fkey"
+            columns: ["pod_resource_id"]
+            isOneToOne: false
+            referencedRelation: "pod_resource"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      shared_resource: {
+        Row: {
+          id: number
+          resource_type: string
+          resource_id: number
+          
+          // General sharing fields
+          shared_with_user_id: string | null
+          shared_with_public: boolean | null
+          requires_payment: boolean | null
+          description: string | null
+          access_limit: number | null
+          expiry_date: string | null
+          
+          // Payment fields
+          price_per_access: number | null
+          price_currency: string | null
+          price_satoshis: number | null
+          
+          // BSV/Overlay specific fields
+          overlay_topic: string | null
+          access_policy: Json | null
+          payment_address: string | null
+          
+          // Stats
+          total_access_count: number | null
+          total_earnings_satoshis: number | null
+          is_active: boolean | null
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          resource_type: string
+          resource_id: number
+          
+          // General sharing fields
+          shared_with_user_id?: string | null
+          shared_with_public?: boolean | null
+          requires_payment?: boolean | null
+          description?: string | null
+          access_limit?: number | null
+          expiry_date?: string | null
+          
+          // Payment fields
+          price_per_access?: number | null
+          price_currency?: string | null
+          price_satoshis?: number | null
+          
+          // BSV/Overlay specific fields
+          overlay_topic?: string | null
+          access_policy?: Json | null
+          payment_address?: string | null
+          
+          // Stats
+          total_access_count?: number | null
+          total_earnings_satoshis?: number | null
+          is_active?: boolean | null
+          created_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          resource_type?: string
+          resource_id?: number
+          
+          // General sharing fields
+          shared_with_user_id?: string | null
+          shared_with_public?: boolean | null
+          requires_payment?: boolean | null
+          description?: string | null
+          access_limit?: number | null
+          expiry_date?: string | null
+          
+          // Payment fields
+          price_per_access?: number | null
+          price_currency?: string | null
+          price_satoshis?: number | null
+          
+          // BSV/Overlay specific fields
+          overlay_topic?: string | null
+          access_policy?: Json | null
+          payment_address?: string | null
+          
+          // Stats
+          total_access_count?: number | null
+          total_earnings_satoshis?: number | null
+          is_active?: boolean | null
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      micropayment: {
+        Row: {
+          id: number
+          shared_resource_id: number
+          buyer_user_id: string
+          seller_user_id: string
+          amount_satoshis: number
+          tx_hash: string
+          payment_status: string
+          access_granted: boolean | null
+          access_expires_at: string | null
+          created_at: string
+          confirmed_at: string | null
+        }
+        Insert: {
+          id?: never
+          shared_resource_id: number
+          buyer_user_id: string
+          seller_user_id: string
+          amount_satoshis: number
+          tx_hash: string
+          payment_status: string
+          access_granted?: boolean | null
+          access_expires_at?: string | null
+          created_at?: string
+          confirmed_at?: string | null
+        }
+        Update: {
+          id?: never
+          shared_resource_id?: number
+          buyer_user_id?: string
+          seller_user_id?: string
+          amount_satoshis?: number
+          tx_hash?: string
+          payment_status?: string
+          access_granted?: boolean | null
+          access_expires_at?: string | null
+          created_at?: string
+          confirmed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "micropayment_shared_resource_id_fkey"
+            columns: ["shared_resource_id"]
+            isOneToOne: false
+            referencedRelation: "shared_resource"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      overlay_sync: {
+        Row: {
+          id: number
+          sync_type: string
+          reference_id: number
+          overlay_topic: string
+          tx_hash: string | null
+          sync_status: string
+          sync_data: Json | null
+          last_sync_at: string | null
+          retry_count: number | null
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          sync_type: string
+          reference_id: number
+          overlay_topic: string
+          tx_hash?: string | null
+          sync_status: string
+          sync_data?: Json | null
+          last_sync_at?: string | null
+          retry_count?: number | null
+          created_at?: string
+          user_id?: string
+        }
+        Update: {
+          id?: never
+          sync_type?: string
+          reference_id?: number
+          overlay_topic?: string
+          tx_hash?: string | null
+          sync_status?: string
+          sync_data?: Json | null
+          last_sync_at?: string | null
+          retry_count?: number | null
+          created_at?: string
+          user_id?: string
         }
         Relationships: []
       }

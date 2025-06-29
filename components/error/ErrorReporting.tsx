@@ -108,7 +108,7 @@ export function ErrorReporting({
       id: errorId || `error_${Date.now()}`,
       message: error?.message || 'Unknown error',
       stack: error?.stack,
-      componentStack: errorInfo?.componentStack,
+      componentStack: errorInfo?.componentStack || undefined,
       timestamp: new Date().toISOString(),
       url: window.location.href,
       userAgent: navigator.userAgent,

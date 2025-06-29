@@ -101,6 +101,9 @@ create table if not exists public.pod_resource (
   overlay_topic text,                -- Overlay topic for discovery (if shared)
   pod_url text not null,             -- Full URL to the resource in user's pod
   content_hash text,                 -- Hash of content for integrity verification
+  description text,                  -- Description of the resource
+  mime_type text,                    -- MIME type of the resource
+  resource_size integer,             -- Size of the resource in bytes
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now(),
   user_id uuid not null default auth.uid()
@@ -208,8 +211,11 @@ select create_policy_if_not_exists(
 
 create table if not exists public.context_entry (
   id integer generated always as identity primary key,
+  title text not null,               -- Title of the context entry
   content text not null,             -- The text snippet, note or context entry
-  metadata jsonb,                    -- e.g. tags, privacy flag, links to pod resources
+  content_type text not null default 'text', -- 'text', 'markdown', 'link', 'snippet'
+  tags text[] default '{}',          -- Array of tags for categorization
+  metadata jsonb,                    -- Additional metadata, privacy flags, etc.
   pod_resource_id integer references public.pod_resource(id) on delete set null,
   bsv_tx_hash text,                  -- BSV transaction hash if notarized
   overlay_topic text,                -- Overlay topic if shared
@@ -249,10 +255,26 @@ create table if not exists public.shared_resource (
   id integer generated always as identity primary key,
   resource_type text not null,       -- 'pod_resource' or 'context_entry'
   resource_id integer not null,      -- ID from pod_resource or context_entry
-  price_satoshis integer not null,   -- Micropayment price in satoshis
-  overlay_topic text not null,       -- Overlay topic for discovery
+  
+  -- General sharing fields
+  shared_with_user_id text,          -- Direct user sharing (user ID)
+  shared_with_public boolean default false, -- Public sharing flag
+  requires_payment boolean default false,   -- Whether payment is required
+  description text,                  -- Description of the shared resource
+  access_limit integer,              -- Maximum number of accesses
+  expiry_date timestamp with time zone,     -- When sharing expires
+  
+  -- Payment fields
+  price_per_access decimal(10,2),    -- Generic price per access
+  price_currency text default 'USD', -- Currency (USD, BSV, SAT)
+  price_satoshis integer,            -- Micropayment price in satoshis (for BSV)
+  
+  -- BSV/Overlay specific fields
+  overlay_topic text,                -- Overlay topic for discovery
   access_policy jsonb,               -- SOLID access control policies
   payment_address text,              -- BSV address for payments
+  
+  -- Stats
   total_access_count integer default 0,
   total_earnings_satoshis integer default 0,
   is_active boolean default true,

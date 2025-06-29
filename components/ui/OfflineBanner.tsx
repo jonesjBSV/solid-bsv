@@ -169,7 +169,7 @@ export function OfflineIndicator() {
 
 // Network status component for settings/debug
 export function NetworkStatus() {
-  const { isOnline, lastOnlineAt, lastOfflineAt, retryConnection } = useOfflineBanner()
+  const { isOnline, retryConnection } = useOfflineBanner()
   const networkInfo = useNetworkInfo()
 
   return (
@@ -218,14 +218,9 @@ export function NetworkStatus() {
         )}
       </div>
 
-      {lastOfflineAt && (
-        <div className="text-sm text-muted-foreground">
-          {isOnline 
-            ? `Last offline: ${lastOfflineAt.toLocaleString()}`
-            : `Offline since: ${lastOfflineAt.toLocaleString()}`
-          }
-        </div>
-      )}
+      <div className="text-sm text-muted-foreground">
+        {isOnline ? 'Connected' : 'Offline'}
+      </div>
 
       {!isOnline && (
         <Button onClick={retryConnection} size="sm" className="w-full">

@@ -368,11 +368,7 @@ export async function getSharedResources(
   const supabase = createClient()
   let query = supabase
     .from('shared_resource')
-    .select(`
-      *,
-      pod_resource:resource_id!shared_resource_resource_id_fkey (*),
-      context_entry:resource_id!shared_resource_resource_id_fkey (*)
-    `, { count: 'exact' })
+    .select(`*`, { count: 'exact' })
     .eq('is_active', true)
     .order('created_at', { ascending: false })
 
@@ -428,7 +424,7 @@ export async function getSharedResources(
 export async function createBSVAttestation(
   attestation: InsertBSVAttestation
 ): Promise<DatabaseResponse<BSVAttestation>> {
-  console.log('Creating BSV attestation:', attestation.bsv_tx_hash)
+  console.log('Creating BSV attestation:', attestation.tx_hash)
   
   const supabase = createClient()
   const response = await supabase
@@ -459,7 +455,7 @@ export async function getBSVAttestationByTxHash(
 export async function createMicropayment(
   payment: InsertMicropayment
 ): Promise<DatabaseResponse<Micropayment>> {
-  console.log('Creating micropayment:', payment.bsv_tx_hash)
+  console.log('Creating micropayment:', payment.tx_hash)
   
   const supabase = createClient()
   const response = await supabase
@@ -557,10 +553,10 @@ export async function getUserStats(userId: string) {
     supabase.from('pod_resource').select('*', { count: 'exact', head: true }).eq('user_id', userId),
     supabase.from('context_entry').select('*', { count: 'exact', head: true }).eq('user_id', userId),
     supabase.from('shared_resource').select('*', { count: 'exact', head: true }).eq('user_id', userId),
-    supabase.from('micropayment').select('price_satoshis', { count: 'exact' }).eq('seller_user_id', userId).eq('payment_status', 'confirmed')
+    supabase.from('micropayment').select('amount_satoshis', { count: 'exact' }).eq('seller_user_id', userId).eq('payment_status', 'confirmed')
   ])
 
-  const totalEarnings = micropayments.data?.reduce((sum, payment) => sum + payment.price_satoshis, 0) || 0
+  const totalEarnings = micropayments.data?.reduce((sum, payment) => sum + payment.amount_satoshis, 0) || 0
 
   return {
     podResourcesCount: podResources.count || 0,
