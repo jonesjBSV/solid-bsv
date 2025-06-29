@@ -1,106 +1,93 @@
-# Next.js SaaS Starter Kit
+# SOLID+BSV: Decentralized Second Brain
 
-A modern SaaS starter kit built with Next.js, featuring authentication, payments, and email functionality.
+A revolutionary decentralized second brain application that combines **SOLID pods** for personal data ownership with **BSV blockchain** for trustless timestamping, notarization, and micropayments. Build your personal knowledge vault while maintaining full control of your data.
 
-## Features
+## 🌟 Key Features
 
-- 🔐 Authentication with Google OAuth
-- 💳 Stripe Integration for Payments
-- 📧 Email Support
-- 🗃️ Supabase Database
-- 📊 Google Analytics Integration
+### Core Platform
+- 🔐 **Secure Authentication** with Google OAuth via NextAuth
+- 🏗️ **Modern Stack** - Next.js 15, React 19, TypeScript, Tailwind CSS
+- 🎨 **Professional UI** - shadcn/ui components with responsive design
+- 🗃️ **Robust Database** - Supabase (PostgreSQL) with Row Level Security
 
-## Environment Setup
+### Decentralized Architecture
+- 🔒 **SOLID Pod Integration** - Your data, your pod, your control
+- ⛓️ **BSV Blockchain** - Immutable timestamping and notarization
+- 🆔 **Decentralized Identity** - DID/VC support for true data ownership
+- 🌐 **Overlay Network** - Public discovery without compromising privacy
 
-1. Clone the repository
-2. Install dependencies:
+### Second Brain Features
+- 🧠 **Context Management** - Rich knowledge entry and organization system
+- 🔍 **Intelligent Search** - AI-powered content discovery and connections
+- 📊 **Knowledge Graphs** - Visual representation of your knowledge network
+- 🏷️ **Smart Tagging** - Automated content categorization and linking
+
+### Monetization & Sharing
+- 💰 **Micropayments** - Monetize your knowledge through BSV pay-per-access
+- 🔗 **Selective Sharing** - Share specific resources while keeping others private
+- 🏪 **Knowledge Marketplace** - Discover and access premium content from others
+- 📜 **Verifiable Proofs** - Blockchain-backed authenticity for shared content
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ 
+- npm/yarn/pnpm
+- Supabase account
+- Google OAuth credentials
+- BSV wallet (for blockchain features)
+
+### Installation
+
+1. **Clone the repository**
 ```bash
+git clone <repository-url>
+cd solid-bsv
+```
+
+2. **Install dependencies**
+```bash
+npm install
+# or
 pnpm install
 ```
 
-3.  cp  .env.example  to .env.local ,
-    set up your environment variables in .env.local
+3. **Environment Setup**
+```bash
+cp .env.example .env.local
+```
 
 ### Required Environment Variables
 
-#### Supabase Configuration
+#### Core Configuration
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SECRET_KEY=your_secret_key
-```
-
-#### Stripe Configuration
-```env
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
-STRIPE_SECRET_KEY=your_secret_key
-STRIPE_WEBHOOK_SECRET=your_webhook_secret
-```
-
-#### Email Configuration
-```env
-EMAIL_SERVER_USER=your_email
-EMAIL_SERVER_PASSWORD=your_password
-EMAIL_SERVER_HOST=smtp.gmail.com
-EMAIL_SERVER_PORT=465
-EMAIL_FROM=your_from_email
-```
-
-#### Authentication
-```env
-AUTH_GOOGLE_ID=your_google_client_id
-AUTH_GOOGLE_SECRET=your_google_secret
+# NextAuth
 AUTH_SECRET=your_auth_secret
+NEXTAUTH_URL=http://localhost:3000
+AUTH_TRUST_HOST=true
+
+# Google OAuth
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_client_secret
 ```
 
-## Getting Started
-
-1. Set up all environment variables as described above
-2. Run the development server:
-```bash
-pnpm dev
+#### Supabase Database
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SECRET_KEY=your_supabase_service_role_key
+SUPABASE_JWT_SECRET=your_jwt_secret
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Project Configuration
-
-The project configuration is managed in `config.ts`. Here's a detailed breakdown of each configuration field:
-
-### Metadata Configuration
-```typescript
-metadata: {
-    title: String          // Website title for SEO and browser tab
-    description: String    // Site description for SEO and social sharing
-    keywords: String[]     // Keywords for SEO optimization
-}
+#### BSV Integration (Coming Soon)
+```env
+BSV_PRIVATE_KEY=your_bsv_private_key
+BSV_NETWORK=mainnet  # or testnet
+OVERLAY_NETWORK_HOST=your_overlay_host
 ```
 
-### Stripe Plan Configuration
-Each plan (free, basic, pro) contains:
-```typescript
-stripe: {
-    [planName]: {
-        priceId: String      // Stripe price ID for the subscription
-        productId: String    // Stripe product ID
-        name: String         // Display name of the plan
-        description: String  // Plan description shown to users
-    }
-}
+#### SOLID Pod Configuration (Coming Soon)
+```env
+SOLID_PROVIDER_URL=your_solid_provider
+SOLID_CLIENT_ID=your_solid_client_id
 ```
-
-Current available plans:
-- Free Plan: Basic access with limited features
-- Basic Plan (price_1QrDN5LftJls1Qmt6yKw9Jc1): Standard features
-- Pro Plan (price_1QuociLftJls1QmtLkO3yTap): Full access to all features
-
-### Analytics and Integration
-```typescript
-googleAnalyticsId: String    // Google Analytics tracking ID (from environment variables)
-openPanelClientId: String    // Open Panel integration client ID
-emailProvider: String        // Email service provider (currently "nodemailer")
-```
-
-## Support
-
-For any questions or issues, please open an issue in the repository.
