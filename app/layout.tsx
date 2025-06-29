@@ -11,6 +11,8 @@ import FooterWrapper from "@/components/ui/FooterWrapper";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AppProvider } from "@/context/AppContext";
 import { ErrorBoundary } from "@/components/error/ErrorBoundary";
+import { PerformanceMonitor, ResourceHints } from "@/components/ui/LazyComponents";
+import { PerformanceTrigger } from "@/components/dev/PerformanceDashboard";
 
 export const metadata: Metadata = config.metadata;
 
@@ -25,17 +27,21 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="system" storageKey="solid-bsv-theme">
           <AppProvider>
             <ErrorBoundary>
-              <body
-                className="antialiased min-h-screen flex flex-col"
-              >
-                <OfflineBanner />
-                <Toaster position="top-center" />
-                <EnhancedToaster />
-                <main className="flex-grow">
-                  {children}
-                </main>
-                <FooterWrapper />
-              </body>
+              <PerformanceMonitor>
+                <body
+                  className="antialiased min-h-screen flex flex-col"
+                >
+                  <ResourceHints />
+                  <OfflineBanner />
+                  <Toaster position="top-center" />
+                  <EnhancedToaster />
+                  <main className="flex-grow">
+                    {children}
+                  </main>
+                  <FooterWrapper />
+                  <PerformanceTrigger />
+                </body>
+              </PerformanceMonitor>
             </ErrorBoundary>
           </AppProvider>
         </ThemeProvider>
