@@ -97,7 +97,7 @@ export function WalletConnection() {
               <Key className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Identity Key:</span>
               <code className="text-sm bg-muted px-2 py-1 rounded">
-                {wallet.identityKey?.slice(0, 16)}...
+                {wallet.getIdentityKey()?.slice(0, 16)}...
               </code>
             </div>
             
