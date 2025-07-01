@@ -54,8 +54,8 @@ const navigationItems = [
 // SOLID+BSV Features (for future showcase)
 const showcaseItems = [
   {
-    title: "SOLID Pods",
-    url: "/app/pods",
+    title: "SOLID Settings",
+    url: "/app/solid",
     icon: Database,
   },
   {

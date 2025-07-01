@@ -542,6 +542,94 @@ export async function searchContextEntries(
   return handleSupabaseResponse<ContextEntry[]>(response)
 }
 
+// SOLID Pod Connection Operations
+export async function updateIdentityConnection(
+  userId: string,
+  connectionData: {
+    solid_pod_url: string
+    connection_status: 'connected' | 'disconnected' | 'pending'
+    access_token?: string
+  }
+): Promise<DatabaseResponse<Identity>> {
+  console.log('Updating identity connection for user:', userId)
+  
+  const supabase = createClient()
+  
+  // First check if identity exists
+  const existingIdentity = await supabase
+    .from('identity')
+    .select('*')
+    .eq('user_id', userId)
+    .single()
+  
+  if (existingIdentity.data) {
+    // Update existing identity
+    const response = await supabase
+      .from('identity')
+      .update({
+        ...connectionData,
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', userId)
+      .select()
+      .single()
+    
+    return handleSupabaseResponse<Identity>(response)
+  } else {
+    // Create new identity
+    const response = await supabase
+      .from('identity')
+      .insert({
+        ...connectionData,
+        user_id: userId,
+        did: '', // Will be populated later
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .select()
+      .single()
+    
+    return handleSupabaseResponse<Identity>(response)
+  }
+}
+
+export async function getConnectedIdentity(userId: string): Promise<DatabaseResponse<Identity | null>> {
+  console.log('Checking connected identity for user:', userId)
+  
+  const supabase = createClient()
+  const response = await supabase
+    .from('identity')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('connection_status', 'connected')
+    .single()
+  
+  if (response.error?.code === 'PGRST116') {
+    // No rows found
+    return { data: null, error: null }
+  }
+  
+  return handleSupabaseResponse<Identity>(response)
+}
+
+export async function disconnectPod(userId: string): Promise<DatabaseResponse<Identity>> {
+  console.log('Disconnecting pod for user:', userId)
+  
+  const supabase = createClient()
+  const response = await supabase
+    .from('identity')
+    .update({
+      connection_status: 'disconnected',
+      access_token: null,
+      updated_at: new Date().toISOString()
+    })
+    .eq('user_id', userId)
+    .select()
+    .single()
+  
+  return handleSupabaseResponse<Identity>(response)
+}
+
 // Statistics Operations
 export async function getUserStats(userId: string) {
   console.log('Fetching user statistics for:', userId)
