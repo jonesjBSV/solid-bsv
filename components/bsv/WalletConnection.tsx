@@ -190,23 +190,14 @@ export function WalletConnection() {
         </Button>
 
         <div className="text-xs text-muted-foreground text-center">
-          Don't have a BSV wallet? Get one from{' '}
+          Don't have a BSV wallet? Get the metanet wallet from{' '}
           <a 
-            href="https://handcash.io" 
+            href="https://metanet.bsvb.tech/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="underline"
           >
-            HandCash
-          </a>
-          {' '}or{' '}
-          <a 
-            href="https://relysia.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            Relysia
+            Metanet Desktop
           </a>
         </div>
       </CardContent>
