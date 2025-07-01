@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Info, Shield, Database, Wallet, Bitcoin, Zap, Store } from 'lucide-react'
+import { Info, Shield, Database, Wallet, Bitcoin, Zap, Store, Brain } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { useBSVWallet } from '@/hooks/useBSVWallet'
 
@@ -141,9 +141,10 @@ export default function SolidShowcasePage() {
       </Alert>
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="pod">Pod</TabsTrigger>
+          <TabsTrigger value="context">Context</TabsTrigger>
           <TabsTrigger value="wallet">Wallet</TabsTrigger>
           <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
           <TabsTrigger value="sync" disabled={!isConnected}>
@@ -304,17 +305,46 @@ export default function SolidShowcasePage() {
                 Data Marketplace
               </CardTitle>
               <CardDescription>
-                Discover and access monetized SOLID pod resources
+                Discover and access monetized SOLID pod resources with BSV micropayments
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8">
-                <Store className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Marketplace Coming Soon</h3>
-                <p className="text-sm text-muted-foreground">
-                  Browse public SOLID pod resources, pay for access with BSV micropayments,
-                  and discover valuable data shared by the community.
-                </p>
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">Browse Resources</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Discover valuable content shared by the community with instant BSV payments
+                    </p>
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href="/app/marketplace">
+                        <Store className="h-4 w-4 mr-2" />
+                        Browse Marketplace
+                      </a>
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">Sell Your Content</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Monetize your knowledge and resources with pay-per-access pricing
+                    </p>
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href="/app/context">
+                        <Bitcoin className="h-4 w-4 mr-2" />
+                        Share & Earn
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+                
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    The marketplace uses BSV micropayments for instant, low-cost access to premium content. 
+                    Your purchases are verified using SPV technology without requiring full blockchain downloads.
+                  </AlertDescription>
+                </Alert>
               </div>
             </CardContent>
           </Card>
@@ -325,6 +355,57 @@ export default function SolidShowcasePage() {
             podUrl={podUrl || ''}
             isConnected={isConnected}
           />
+        </TabsContent>
+
+        <TabsContent value="context" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5" />
+                Second Brain Context Store
+              </CardTitle>
+              <CardDescription>
+                Your personal knowledge base with AI enhancement and BSV monetization
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">Knowledge Entries</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Store and organize your thoughts, insights, and knowledge with rich categorization
+                    </p>
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href="/app/context">
+                        <Brain className="h-4 w-4 mr-2" />
+                        Manage Context
+                      </a>
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">AI Enhancement</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Get AI-powered suggestions for tags, relationships, and content improvements
+                    </p>
+                    <Button variant="outline" className="w-full" disabled>
+                      <Zap className="h-4 w-4 mr-2" />
+                      Coming Soon
+                    </Button>
+                  </div>
+                </div>
+                
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    Your context entries are stored in your SOLID pod for complete data sovereignty. 
+                    Share valuable insights with BSV micropayments for monetized knowledge exchange.
+                  </AlertDescription>
+                </Alert>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-4">
@@ -339,12 +420,42 @@ export default function SolidShowcasePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8">
-                <Shield className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Analytics Dashboard</h3>
-                <p className="text-sm text-muted-foreground">
-                  Monitor pod access patterns, micropayment history, and resource monetization performance.
-                </p>
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">Performance Metrics</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Monitor earnings, usage patterns, and content performance
+                    </p>
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href="/app/analytics">
+                        <Shield className="h-4 w-4 mr-2" />
+                        View Analytics
+                      </a>
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">BSV Blockchain Data</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Track notarizations, transaction fees, and blockchain performance
+                    </p>
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href="/app/analytics">
+                        <Bitcoin className="h-4 w-4 mr-2" />
+                        Blockchain Stats
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+                
+                <Alert>
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    Analytics track your content performance, earnings from shared resources, 
+                    and BSV blockchain activity including notarizations and micropayments.
+                  </AlertDescription>
+                </Alert>
               </div>
             </CardContent>
           </Card>

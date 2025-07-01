@@ -22,7 +22,9 @@ import {
   User,
   Globe,
   Shield,
-  Search
+  Search,
+  Store,
+  BarChart3
 } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/providers/ThemeProvider"
@@ -51,32 +53,32 @@ const navigationItems = [
   }
 ]
 
-// SOLID+BSV Features (for future showcase)
+// SOLID+BSV Features
 const showcaseItems = [
   {
-    title: "SOLID Settings",
+    title: "SOLID Pod",
     url: "/app/solid",
     icon: Database,
+  },
+  {
+    title: "Context Store",
+    url: "/app/context",
+    icon: Brain,
+  },
+  {
+    title: "Marketplace",
+    url: "/app/marketplace",
+    icon: Store,
+  },
+  {
+    title: "Analytics",
+    url: "/app/analytics",
+    icon: BarChart3,
   },
   {
     title: "Identity & DID",
     url: "/app/identity",
     icon: Shield,
-  },
-  {
-    title: "Second Brain",
-    url: "/app/brain",
-    icon: Brain,
-  },
-  {
-    title: "Data Sharing",
-    url: "/app/sharing",
-    icon: Share2,
-  },
-  {
-    title: "Micropayments",
-    url: "/app/wallet",
-    icon: Wallet,
   },
   {
     title: "BSV Network",
